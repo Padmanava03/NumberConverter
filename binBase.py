@@ -14,7 +14,7 @@ def my_pow(base, fractionalBits):
     `fractionalBits`.
     """
     ans = 1
-    while(fractionalBits > 0):
+    while fractionalBits > 0:
         if fractionalBits % 2 == 1:
             ans *= base
 
@@ -25,52 +25,53 @@ def my_pow(base, fractionalBits):
 
 def convHelper(num):
     """
-    This Python function converts a decimal number to its binary representation, including handling
-    floating-point numbers.
+    The function `convHelper` converts a given number into its binary representation, including handling
+    negative and floating-point numbers.
     
-    :param num: It looks like the code you provided is a helper function for converting a decimal number
-    to its binary representation. The `convHelper` function takes a number as input and converts it to
-    binary
+    :param num: The `convHelper` function you provided seems to be converting a given number into its
+    binary representation. The function first checks if the number is negative or a float, then performs
+    the conversion accordingly
     :return: The function `convHelper` is converting a given number into its binary representation. If
-    the input number is a float, it first scales the number and then converts it to binary. The binary
-    representation is then formatted with a decimal point if the input was a float. Finally, the
-    function returns the binary representation of the input number. If the input number was negative,
-    the binary representation is preceded by a
+    the input number is a float, it first converts it to an integer by multiplying it with a power of 2,
+    then proceeds to convert the absolute value of the number to binary. If the input number is an
+    integer, it directly converts the absolute value to binary.
     """
-    binBase = ""
-
-    if isinstance(num, float):
+    isNeg = True if num < 0 else False
+    isFloat = isinstance(num, float)
+    if isFloat:
         powBase = my_pow(2, 8)
-        newNum = int(abs(num*powBase)) if num < 0 else int(num*powBase)
+        num = int(abs(num*powBase)) if isNeg else int(num*powBase)
     else:
-        newNum = abs(num) if num < 0 else num
+        num = abs(num) if num < 0 else num
 
-    while newNum > 0:
-        rem = newNum % 2
+    binBase = ""
+    while num > 0:
+        rem = num % 2
         binBase = f"{binBase}{rem}"
-        newNum //= 2
+        num //= 2
 
     c, temp = len(binBase)-1, ""
     while c >= 0:
-        if isinstance(num, float) and c == 7:
+        if isFloat and c == 7:
             temp = f"{temp}."
+
         temp = f"{temp}{binBase[c]}"
         c -= 1
     
-    binBase = temp
-    if num < 0:
-        return f"-{binBase}"
-    else:
-        return binBase
+    binBase = f"0.{temp.zfill(8)}" if len(temp) <= 8 and isFloat else temp
+    if isNeg:
+        binBase = f"-{binBase}"
 
-def numto_Binary(num=None):
+    return binBase
+
+def numto_Bin(num=None):
     """
-    The function `numto_Binary` converts a given number to its binary representation.
+    The function `numto_Bin` converts a given number to its binary representation.
     
-    :param num: The given code defines a function `numto_Binary` that converts a decimal number to its
+    :param num: The given code defines a function `numto_Bin` that converts a decimal number to its
     binary representation. The function checks if a number has been provided, and if not, it prints a
     message and returns `None`. It then checks if the number is 0 or 1 and returns the
-    :return: The function `numto_Binary` is returning the binary representation of the input number
+    :return: The function `numto_Bin` is returning the binary representation of the input number
     `num`. If `num` is not provided, it will print "No number has been provided!" and return `None`. If
     the input number is 0 or 1, it will return the number itself as a string. Otherwise, it will call
     the `convHelper` function to convert the number to
@@ -80,13 +81,13 @@ def numto_Binary(num=None):
         return
     
     binBase = ""
-    if int(num) == 0 or int(num) == 1:
-        return f"{num}"
+    if num == 0 or num == 1:
+        return f"{int(num)}"
     else:
         binBase = convHelper(num)
 
     return binBase
 
 if __name__ == "__main__":
-    res = numto_Binary(43.167)
+    res = numto_Bin(2)
     print(f"{res}\n{type(res)}")
