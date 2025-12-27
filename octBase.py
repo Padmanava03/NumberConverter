@@ -5,7 +5,6 @@ def numto_Oct(num=None):
         print("No numeric value has been provided!")
         return
     
-    octBase = ""
     if num == 0 or num == 1:
         return f"{int(num)}"
     else:
