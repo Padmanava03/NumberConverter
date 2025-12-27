@@ -9,16 +9,10 @@ def my_pow(base, fractionalBits):
 
     return ans
 
-def isSame(num):
-    return num == int(num)
-
-def isNeg(num):
-    return num < 0
-
 def scale_theNum(base, num):
-    if isinstance(num, float) and not isSame(num):
+    if isinstance(num, float) and num != int(num):
         powBase = my_pow(base, 8)
-        num = int(abs(num * powBase)) if isNeg(num) else int(num * powBase)
+        num = int(abs(num * powBase)) if num < 0 else int(num * powBase)
     else:
         num = int(abs(num)) if num < 0 else int(num)
 
@@ -55,8 +49,8 @@ def format_theOutput(resBase, num):
         temp = f"{temp}{resBase[c]}"
         c -= 1
     
-    resBase = f"0.{temp.zfill(8)}" if len(temp) <= 8 and isinstance(num, float) and not isSame(num) else temp
-    if isNeg(num):
+    resBase = f"0.{temp.zfill(8)}" if len(temp) <= 8 and isinstance(num, float) and num != int(num) else temp
+    if num < 0:
         resBase = f"-{resBase}"
 
     return resBase
